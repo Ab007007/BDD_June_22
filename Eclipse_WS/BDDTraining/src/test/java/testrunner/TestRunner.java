@@ -8,10 +8,10 @@ import io.cucumber.junit.CucumberOptions;
 @RunWith(Cucumber.class)
 
 @CucumberOptions(
-		features = "src/test/java/feature/ValidateSearchResults.feature",
+		features = "src/test/java/feature/DataTablesDemo.feature",
 		glue = {"stepdefinition"},
 		monochrome = true,
-//		dryRun = true,
+		//dryRun = true,
 		plugin = {"pretty", "junit:target/JunitReports/reports.xml",
 							"json:target/JsonReports/reports.json",
 							"html:target/HTMLReports/reports.html"}
