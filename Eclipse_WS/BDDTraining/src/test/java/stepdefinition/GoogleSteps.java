@@ -1,5 +1,6 @@
 package stepdefinition;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -8,8 +9,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -18,10 +24,21 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class GoogleSteps {
 
 	WebDriver driver = null;
+	
+	@Before("@google")
+	public void onlyGoogle() {
+		System.out.println("-------GOOOGLEEEEEE----------------------");
+	}
+	
+	@After("@google")
+	public void onlyGooglePost()  {
+		System.out.println("**********GOOOGGSS***************");
+	}
+	
 	@Given("user is on google page")
 	public void user_is_on_google_page() {
-		WebDriverManager.chromedriver().setup();
-		driver = new ChromeDriver();
+		WebDriverManager.firefoxdriver().setup();
+		driver = new FirefoxDriver();
 		driver.get("https://www.google.com/");
 		Assert.assertTrue(driver.getTitle().contains("Google"));		
 	}
@@ -95,6 +112,21 @@ public class GoogleSteps {
 			   System.out.println(link.getText());
 		   }
 		   driver.get("https://www.google.com/");  
+	   }
+	}
+	
+	@When("user search different companies given as Map and print the details")
+	public void user_search_different_companies_given_as_map_and_print_the_details(io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
+	   Map<String, String> data = dataTable.asMap();
+	   System.out.println(data);
+	   driver.findElement(By.name("q")).sendKeys(data.get("companyName"));
+	   WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+	   wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[@class='FPdoLc lJ9FBc']//input[@aria-label='Google Search']"))));
+	   driver.findElement(By.xpath("//div[@class='FPdoLc lJ9FBc']//input[@aria-label='Google Search' and @value='Google Search']")).click();
+	   List<WebElement> links = driver.findElements(By.tagName("h3"));
+	   for (WebElement link : links) 
+	   {
+		   System.out.println(link.getText());
 	   }
 	}
 

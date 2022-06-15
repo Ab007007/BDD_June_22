@@ -1,5 +1,7 @@
 package stepdefinition;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -46,4 +48,35 @@ public class FormyApp {
 	   System.out.println(successmsg);
 	   driver.close();
 	}
+	
+	@When("user enter all required fileds and validate success msg")
+	public void user_enter_all_required_fileds_and_validate_success_msg(io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
+	    List<List<String>> data = dataTable.asLists();
+	    String fname,lname,jtitle;
+	    for (int i = 0; i < data.size(); i++) 
+	    {
+	    	List<String> values = data.get(i);
+	    	fname = values.get(0);
+	    	lname = values.get(1);
+	    	jtitle = values.get(2);
+	    	driver.findElement(By.id("first-name")).sendKeys(fname);
+	    	driver.findElement(By.id("last-name")).sendKeys(lname);
+	    	driver.findElement(By.id("job-title")).sendKeys(jtitle);
+		
+	    	driver.findElement(By.linkText("Submit")).click();
+	    	Thread.sleep(10000);
+	    	String successmsg = driver.findElement(By.xpath("//div[@role='alert']")).getText();
+	 	    System.out.println(successmsg);
+	 	    driver.findElement(By.linkText("Form")).click();
+	 		Thread.sleep(2000);
+	    }
+	}
+	@When("user close the brower")
+	public void user_close_the_brower() {
+	    // Write code here that turns the phrase above into concrete actions
+	    throw new io.cucumber.java.PendingException();
+	}
+
+
+
 }
